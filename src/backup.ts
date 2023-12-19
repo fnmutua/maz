@@ -25,10 +25,11 @@ const uploadToGCS = async ({ name, path }: { name: string; path: string }) => {
 
 const dumpToFile = async (path: string) => {
   console.log("Dumping DB to file...");
-
+  //`pg_dump ${env.BACKUP_DATABASE_URL} -F t | gzip > ${path}`,
   await new Promise((resolve, reject) => {
     exec(
-      `pg_dump ${env.BACKUP_DATABASE_URL} -F t | gzip > ${path}`,
+      `pg_dump -Ft ${env.BACKUP_DATABASE_URL} | gzip > ${path}`,
+
       (error, _, stderr) => {
         if (error) {
           reject({ error: JSON.stringify(error), stderr });
